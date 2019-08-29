@@ -1,10 +1,14 @@
 import React from "react";
 
 class SearchBar extends React.Component {
-	getFlickrAPI(event) {
-		const string = `teste`
-		const apiKey = '9f375f3ac03a2010276ff850f1f285d9'
-		fetch(`https://www.flickr.com/services/rest?api_key=${apiKey}&method=flickr.photos.search&text=${string}&format=json`)
+	
+	constructor(props) {
+		super(props)
+	}
+
+	handleSubmit(event) {
+		event.preventDefault()
+		console.log(this.props.history)		
 	}
 
 	render() {
@@ -19,10 +23,18 @@ class SearchBar extends React.Component {
 			padding: '10px 20px'
 		}
 		return (
-			<div style={{ display: 'flex' }}>
-				<input style={inputStyle} type="text" onChange={this.getFlickrAPI} />
-			</div>
+			<>
+				<form onSubmit={this.handleSubmit} style={{ display: 'flex' }}>
+					<input
+						placeholder="Pesquisar"
+						type="text"
+						name="s"
+						style={inputStyle}
+					/>
+				</form>
+			</>
 		);
 	}
 }
+
 export default SearchBar;
