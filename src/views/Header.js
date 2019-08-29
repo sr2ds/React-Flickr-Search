@@ -1,14 +1,15 @@
 import React from "react";
+import { withRouter, Link } from 'react-router-dom';
 
 class SearchBar extends React.Component {
-	
+
 	constructor(props) {
 		super(props)
 	}
 
 	handleSubmit(event) {
 		event.preventDefault()
-		console.log(this.props.history)		
+		this.props.history.push(`/search?s=${event.target.search.value}`);
 	}
 
 	render() {
@@ -24,12 +25,15 @@ class SearchBar extends React.Component {
 		}
 		return (
 			<>
-				<form onSubmit={this.handleSubmit} style={{ display: 'flex' }}>
+				<Link to="/"><h1>Flickr Search</h1></Link>
+
+				<form onSubmit={this.handleSubmit.bind(this)} style={{ display: 'flex' }}>
 					<input
 						placeholder="Pesquisar"
 						type="text"
-						name="s"
+						name="search"
 						style={inputStyle}
+						required
 					/>
 				</form>
 			</>
@@ -37,4 +41,4 @@ class SearchBar extends React.Component {
 	}
 }
 
-export default SearchBar;
+export default withRouter(SearchBar);
