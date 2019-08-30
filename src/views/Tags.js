@@ -15,12 +15,14 @@ class Tags extends React.Component {
 		searchByTags(tagName, this.state.page)
 			.then(response => response.json())
 			.then(data => {
-				this.setState({
-					images: data.photos,
-					isLoading: false,
-					search: tagName,
-					// page: this.state.page + 1
-				})
+				if (this.state.search != tagName) {
+					this.setState({
+						images: data.photos,
+						isLoading: false,
+						search: tagName,
+						// page: this.state.page + 1
+					})
+				}
 			})
 	}
 

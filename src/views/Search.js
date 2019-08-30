@@ -15,11 +15,13 @@ class Search extends React.Component {
 		searchByString(string)
 			.then(response => response.json())
 			.then(data => {
-				return this.setState({
-					images: data.photos,
-					isLoading: false,
-					search: string
-				})
+				if (this.state.search != string) {
+					return this.setState({
+						images: data.photos,
+						isLoading: false,
+						search: string
+					})
+				}
 			})
 	}
 
@@ -28,7 +30,7 @@ class Search extends React.Component {
 		return this.getImages(s)
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, newProps) {
 		const { s } = queryString.parse(this.props.location.search)
 		return this.getImages(s)
 	}
@@ -48,7 +50,7 @@ class Search extends React.Component {
 						</span>
 					</div>
 					<div className="grid">
-							<Grid images={images.photo} />
+						<Grid images={images.photo} />
 					</div>
 				</>
 			);
