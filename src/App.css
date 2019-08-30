@@ -64,10 +64,10 @@ body {
 }
 
 .card-main {
-  display: flex;              /* Children use Flexbox */
-  flex-direction: column;     /* Rotate Axis to Vertical */
-  justify-content: center;    /* Group Children in Center */
-  align-items: center;        /* Group Children in Center (on cross axis) */
+  display: flex;            
+  flex-direction: column;   
+  justify-content: center;  
+  align-items: center;      
   
 }
 
@@ -77,7 +77,7 @@ body {
 }
 
 .card-main .tag-list {
-  display: flex;              /* Children use Flexbox */
+  display: flex;            
   max-width: 320px;
   flex-flow: row wrap;
   margin-bottom: 5px;

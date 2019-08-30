@@ -12,7 +12,6 @@ function App() {
 		<Router>
 			<>
 				<Route path="/" component={Header} />
-
 				<Route path="/search" component={Search} />
 				<Route path="/tags" component={Tags} />
 			</>

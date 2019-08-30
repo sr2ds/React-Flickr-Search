@@ -25,31 +25,36 @@ class Search extends React.Component {
 
 	componentDidMount() {
 		const { s } = queryString.parse(this.props.location.search)
-		this.getImages(s)
+		return this.getImages(s)
+	}
+
+	componentDidUpdate(prevProps) {
+		const { s } = queryString.parse(this.props.location.search)
+		return this.getImages(s)
 	}
 
 	render() {
 		const { isLoading, images } = this.state;
 
-		return (
-			<>
-				<div className="info">
-					<div>
-						{this.state.search ? `Você buscou por "${this.state.search}"` : ''}
+		if (!isLoading) {
+			return (
+				<>
+					<div className="info">
+						<span>
+							{this.state.search ? `Você buscou por "${this.state.search}"` : ''}
+						</span>
+						<span>
+							{this.state.search ? `Mostrando ${images.photo.length} imagens.` : ''}
+						</span>
 					</div>
-					<div>
-						{this.state.search ? `Mostrando "${images.photo.length}" imagens.` : ''}
+					<div className="grid">
+							<Grid images={images.photo} />
 					</div>
-				</div>
-				<div className="grid">
-					{!isLoading ?
-						<Grid images={images.photo} />
-						:
-						<Loader type="Puff" color="#00BFFF" height="100" width="100" />
-					}
-				</div>
-			</>
-		);
+				</>
+			);
+		}
+
+		return <Loader className="grid" type="Bars" color="#00BFFF" height="100" width="100" />
 	}
 }
 

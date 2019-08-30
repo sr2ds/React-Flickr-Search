@@ -5,53 +5,56 @@ import Grid from '../components/Grid'
 import Loader from 'react-loader-spinner'
 
 class Tags extends React.Component {
-	// https://www.flickr.com/services/api/misc.urls.html
 
 	constructor(props) {
 		super(props);
-		this.state = { images: [], isLoading: true }
+		this.state = { images: [], isLoading: true, page: 1 }
 	}
 
 	getImages(tagName) {
-		searchByTags(tagName)
+		searchByTags(tagName, this.state.page)
 			.then(response => response.json())
 			.then(data => {
 				this.setState({
 					images: data.photos,
 					isLoading: false,
-					search: tagName
+					search: tagName,
+					// page: this.state.page + 1
 				})
 			})
 	}
 
 	componentDidMount() {
 		const { t } = queryString.parse(this.props.location.search)
-		this.getImages(t)
+		return this.getImages(t)
+	}
+
+	componentDidUpdate(prevProps) {
+		const { t } = queryString.parse(this.props.location.search)
+		return this.getImages(t)
 	}
 
 	render() {
 		const { isLoading, images } = this.state;
 
-		return (
-			<>
-				<div className="info">
-					<div>
-						{this.state.search ? `Você está visualizando a tag "${this.state.search}"` : ''}
+		if (!isLoading) {
+			return (
+				<>
+					<div className="info">
+						<span>
+							{this.state.search ? `Você está visualizando a tag "${this.state.search}"` : ''}
+						</span>
+						<span>
+							{this.state.search ? `Mostrando ${images.photo.length} imagens.` : ''}
+						</span>
 					</div>
-					<div>
-						{this.state.search ? `Mostrando "${images.photo.length}" imagens.` : ''}
-					</div>
-				</div>
-				<div className="grid">
-					{!isLoading ?
+					<div className="grid">
 						<Grid images={images.photo} />
-						:
-						<Loader type="Puff" color="#00BFFF" height="100" width="100" />
-					}
-				</div>
-
-			</>
-		);
+					</div>
+				</>
+			);
+		}
+		return <Loader className="grid" type="Bars" color="#00BFFF" height="100" width="100" />
 	}
 }
 

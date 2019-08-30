@@ -10,11 +10,12 @@ export function searchByString(string) {
 	return fetch(flickrPath)
 }
 
-export function searchByTags(tagName) {
+export function searchByTags(tagName, page) {
 	const flickrPath = `${flickrBase}
 	&method=flickr.photos.search
 	&tags=${tagName}
-	&extras=description,url_n,tags,owner_name`
+	&extras=description,url_n,tags,owner_name
+	&page=${page}`
 
 	return fetch(flickrPath)
 }
