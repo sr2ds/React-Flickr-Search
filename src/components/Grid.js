@@ -12,13 +12,11 @@ class Grid extends React.Component {
 		
 		return (
 			<>
-				<div className="container">
 					{images.map(function (image, index) {
 						return (
 							<Card image={image} key={index} {...index} />
 						)
 					})}
-				</div>
 			</>
 		);
 	}

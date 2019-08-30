@@ -1,3 +1,40 @@
+.header {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center
+}
+
+.header h1 a {
+  text-decoration: none;
+  color: rgb(34, 103, 252);;
+  font-size: 20px;
+}
+
+.header input {
+  border-radius: 20px;
+  border: solid 1px rgb(34, 103, 252);
+  width: 350px;
+  font-size: 20px;
+  outline: 0;
+  padding: 10px 20px;
+}  
+
+.info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 920px;
+  margin: 40px auto;
+}
+
+.grid {
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
+  flex-flow: row wrap;
+}
 
 body {
   font-family: 'Open Sans', sans-serif;
@@ -7,20 +44,23 @@ body {
   width: 330px;                 /* Set width of cards */
   display: flex;                /* Children use Flexbox */
   flex-direction: column;       /* Rotate Axis */
-  border: 1px solid #EF9A9A;    /* Set up Border */
+  border: 1px solid rgb(34, 103, 252);;    /* Set up Border */
   border-radius: 4px;           /* Slightly Curve edges */
   overflow: hidden;             /* Fixes the corners */
   margin: 5px;                  /* Add space between cards */
 }
 
 .card-header {
-  color: #D32F2F;
+  color: white;
   text-align: center;
   font-size: 12px;
   font-weight: 600;
-  border-bottom: 1px solid #EF9A9A;
-  background-color: #FFEBEE;
+  border-bottom: 1px solid rgb(34, 103, 252);;
+  background-color: rgb(13, 87, 245);
   padding: 5px 10px;
+  white-space: nowrap; 
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .card-main {
@@ -28,11 +68,35 @@ body {
   flex-direction: column;     /* Rotate Axis to Vertical */
   justify-content: center;    /* Group Children in Center */
   align-items: center;        /* Group Children in Center (on cross axis) */
-  padding: 15px 0;            /* Add padding to the top/bottom */
+  
 }
 
-.main-description {
-  color: #D32F2F;
-  font-size: 12px;
-  text-align: center;
+.card-main img {
+  height: 330px;
+  width: 330px;
+}
+
+.card-main .tag-list {
+  display: flex;              /* Children use Flexbox */
+  max-width: 320px;
+  flex-flow: row wrap;
+  margin-bottom: 5px;
+  align-items: center;
+  align-content: center;
+  
+}
+
+.card-main .tag-list a {
+  background-color: rgb(74, 131, 252);
+  border-radius: 15px;
+  padding: 10px;
+  margin: 2px;
+  text-decoration: none;
+  color:white;
+}
+
+.owner {
+  margin: 15px auto;
+  color: rgb(13, 87, 245);;
+  font-size: 14px;
 }

@@ -2,6 +2,7 @@ import React from "react";
 import queryString from 'query-string'
 import { searchByString } from '../services/flickr'
 import Grid from '../components/Grid'
+import Loader from 'react-loader-spinner'
 
 class Search extends React.Component {
 
@@ -22,7 +23,7 @@ class Search extends React.Component {
 			})
 	}
 
-	componentDidMount(){
+	componentDidMount() {
 		const { s } = queryString.parse(this.props.location.search)
 		this.getImages(s)
 	}
@@ -32,12 +33,21 @@ class Search extends React.Component {
 
 		return (
 			<>
-				{this.state.search ? `Você buscou por "${this.state.search}"` : ''}
-				{!isLoading ?
-					<Grid images={images.photo} />
-					:
-					`isLoading`
-				}
+				<div className="info">
+					<div>
+						{this.state.search ? `Você buscou por "${this.state.search}"` : ''}
+					</div>
+					<div>
+						{this.state.search ? `Mostrando "${images.photo.length}" imagens.` : ''}
+					</div>
+				</div>
+				<div className="grid">
+					{!isLoading ?
+						<Grid images={images.photo} />
+						:
+						<Loader type="Puff" color="#00BFFF" height="100" width="100" />
+					}
+				</div>
 			</>
 		);
 	}

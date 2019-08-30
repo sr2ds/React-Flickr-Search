@@ -12,14 +12,16 @@ class Card extends React.Component {
 
 		return (
 			<>
-					<div class="card">
-						<div class="card-header">{image.title}</div>
-						<div class="card-main">
-							<img alt={image.title} src={image.url_n} key={index} title={image.description._content} />
-							<div class="main-description">{image.ownername}</div>
+				<div class="card">
+					<div class="card-header">{image.title ? image.title : "No name"}</div>
+					<div class="card-main">
+						<img alt={image.title} src={image.url_n} key={index} title={image.description._content} />
+						<div class="owner">{image.ownername}</div>
+						<div class="tag-list">
 							<TagList tags={image.tags.split(' ')} />
 						</div>
 					</div>
+				</div>
 			</>
 		);
 	}

@@ -13,14 +13,13 @@ class TagList extends React.Component {
 		return (
 			<>
 				{tags.map((tag, index) => {
-					return (
-						index < 4 ?
-							<Link to={`/tags?t=${tag}`} key={index} tag={tag}> {tag} </Link>
-							: ''
-					)
+					if (tag && index < 4) {
+						return <Link to={`/tags?t=${tag}`} key={index} tag={tag}> {tag} </Link>
+					}
 				})}
 			</>
 		);
+		
 	}
 }
 

@@ -2,6 +2,7 @@ import React from "react";
 import queryString from 'query-string'
 import { searchByTags } from '../services/flickr'
 import Grid from '../components/Grid'
+import Loader from 'react-loader-spinner'
 
 class Tags extends React.Component {
 	// https://www.flickr.com/services/api/misc.urls.html
@@ -23,7 +24,7 @@ class Tags extends React.Component {
 			})
 	}
 
-	componentDidMount(){
+	componentDidMount() {
 		const { t } = queryString.parse(this.props.location.search)
 		this.getImages(t)
 	}
@@ -33,12 +34,22 @@ class Tags extends React.Component {
 
 		return (
 			<>
-				{this.state.search ? `Você está visualizando a tag "${this.state.search}"` : ''}
-				{!isLoading ?
-					<Grid images={images.photo} />
-					:
-					`isLoading`
-				}
+				<div className="info">
+					<div>
+						{this.state.search ? `Você está visualizando a tag "${this.state.search}"` : ''}
+					</div>
+					<div>
+						{this.state.search ? `Mostrando "${images.photo.length}" imagens.` : ''}
+					</div>
+				</div>
+				<div className="grid">
+					{!isLoading ?
+						<Grid images={images.photo} />
+						:
+						<Loader type="Puff" color="#00BFFF" height="100" width="100" />
+					}
+				</div>
+
 			</>
 		);
 	}
