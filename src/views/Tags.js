@@ -11,30 +11,53 @@ class Tags extends React.Component {
 		this.state = { images: [], isLoading: true, page: 1 }
 	}
 
-	getImages(tagName) {
-		searchByTags(tagName, this.state.page)
+	componentDidMount() {
+		const { t } = queryString.parse(this.props.location.search)
+
+		searchByTags(t, this.state.page)
 			.then(response => response.json())
 			.then(data => {
-				if (this.state.search != tagName) {
-					this.setState({
-						images: data.photos,
-						isLoading: false,
-						search: tagName,
-						// page: this.state.page + 1
-					})
-				}
+				this.setState({
+					images: data.photos,
+					isLoading: false,
+					search: t,
+				})
 			})
 	}
 
-	componentDidMount() {
+	componentDidUpdate(prevProps, newProps) {
 		const { t } = queryString.parse(this.props.location.search)
-		return this.getImages(t)
+
+		if (this.state.search != t) {
+			searchByTags(t, this.state.page)
+				.then(response => response.json())
+				.then(data => {
+					this.setState({
+						images: data.photos,
+						isLoading: false,
+						search: t,
+					})
+				})
+		}
 	}
 
-	componentDidUpdate(prevProps) {
+	async handleLoadMore() {
 		const { t } = queryString.parse(this.props.location.search)
-		return this.getImages(t)
+
+		searchByTags(t, this.state.page + 1)
+			.then(response => response.json())
+			.then(data => {
+				data.photos.photo = this.state.images.photo.concat(data.photos.photo)
+				this.setState({
+					images: data.photos,
+					isLoading: false,
+					search: t,
+					page: this.state.page + 1
+				})
+			})
 	}
+
+
 
 	render() {
 		const { isLoading, images } = this.state;
@@ -52,6 +75,11 @@ class Tags extends React.Component {
 					</div>
 					<div className="grid">
 						<Grid images={images.photo} />
+					</div>
+					<div>
+						<button className="load-more" onClick={this.handleLoadMore.bind(this)}>
+							Load More
+						</button>
 					</div>
 				</>
 			);

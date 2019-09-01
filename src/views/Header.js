@@ -3,9 +3,20 @@ import { withRouter, Link } from 'react-router-dom';
 
 class SearchBar extends React.Component {
 
+	constructor() {
+		super()
+		this.state = { search: '' }
+	}
+
 	handleSubmit(event) {
 		event.preventDefault()
-		this.props.history.push(`/search?s=${event.target.search.value}`);
+		this.props.history.push(`/search?s=${this.state.search}`)
+	}
+
+	handleChange(event) {
+		this.setState({
+			search: event.target.value
+		});
 	}
 
 	render() {
@@ -21,6 +32,8 @@ class SearchBar extends React.Component {
 						name="search"
 						autoFocus={true}
 						required
+						onChange={this.handleChange.bind(this)}
+						value={this.state.search}
 					/>
 				</form>
 			</div>

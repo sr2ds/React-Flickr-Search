@@ -8,33 +8,55 @@ class Search extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = { images: [], isLoading: true }
-	}
-
-	getImages(string) {
-		searchByString(string)
-			.then(response => response.json())
-			.then(data => {
-				if (this.state.search != string) {
-					return this.setState({
-						images: data.photos,
-						isLoading: false,
-						search: string
-					})
-				}
-			})
+		this.state = { images: [], isLoading: true, page: 1 }
 	}
 
 	componentDidMount() {
 		const { s } = queryString.parse(this.props.location.search)
-		return this.getImages(s)
+
+		searchByString(s, this.state.page)
+			.then(response => response.json())
+			.then(data => {
+				this.setState({
+					images: data.photos,
+					isLoading: false,
+					search: s
+				})
+			})
 	}
 
 	componentDidUpdate(prevProps, newProps) {
 		const { s } = queryString.parse(this.props.location.search)
-		return this.getImages(s)
+
+		if (this.state.search != s) {
+			searchByString(s, this.state.page)
+			.then(response => response.json())
+			.then(data => {
+				this.setState({
+					images: data.photos,
+					isLoading: false,
+					search: s
+				})
+			})
+		}
 	}
 
+	async handleLoadMore() {
+		const { s } = queryString.parse(this.props.location.search)
+
+		searchByString(s, this.state.page + 1)
+			.then(response => response.json())
+			.then(data => {
+				data.photos.photo = this.state.images.photo.concat(data.photos.photo)
+				this.setState({
+					images: data.photos,
+					isLoading: false,
+					search: s,
+					page: this.state.page + 1
+				})
+			})
+	}
+	
 	render() {
 		const { isLoading, images } = this.state;
 
@@ -51,6 +73,11 @@ class Search extends React.Component {
 					</div>
 					<div className="grid">
 						<Grid images={images.photo} />
+					</div>
+					<div>
+						<button className="load-more" onClick={this.handleLoadMore.bind(this)}>
+							Load More
+						</button>
 					</div>
 				</>
 			);
