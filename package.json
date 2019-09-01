@@ -2,7 +2,7 @@
   "name": "flickr-search",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/Flickr-Search/",
+  "homepage": "./Flickr-Search/",
   "dependencies": {
     "push-dir": "^0.4.1",
     "query-string": "^6.8.2",
