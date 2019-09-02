@@ -2,7 +2,6 @@
   "name": "flickr-search",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://sr2ds.github.io/Flickr-Search",
   "dependencies": {
     "query-string": "^6.8.2",
     "react": "^16.9.0",
