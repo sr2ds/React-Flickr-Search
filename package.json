@@ -4,7 +4,6 @@
   "private": true,
   "homepage": "https://sr2ds.github.io/Flickr-Search",
   "dependencies": {
-    "push-dir": "^0.4.1",
     "query-string": "^6.8.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
@@ -17,7 +16,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "push-dir --dir=build --branch=gh-pages --cleanup"
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -33,5 +32,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^2.1.1"
   }
 }
