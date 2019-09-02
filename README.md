@@ -1,5 +1,8 @@
 Este projeto ajudará vocē a encontrar as melhores imagens no flickr.
 
+Você pode acessá-lo aqui: https://flickr-search.srdavidsilva.now.sh/
+
+
 ## Como Rodar
 
 Para executar este projeto localmente, basta rodar as etapas abaixo:
@@ -12,7 +15,3 @@ yarn start
 
 Após isso, acesse [http://localhost:3000](http://localhost:3000) no seu navegador.
 
-### TODO:
-1. Carregar mais;
-2. Limpar barra de pesquisa quando for tag; 
-3. Teste de componentes;
