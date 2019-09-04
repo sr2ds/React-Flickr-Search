@@ -28,7 +28,7 @@ class Tags extends React.Component {
 	componentDidUpdate(prevProps, newProps) {
 		const { t } = queryString.parse(this.props.location.search)
 
-		if (this.state.search != t) {
+		if (this.state.search !== t) {
 			searchByTags(t, this.state.page)
 				.then(response => response.json())
 				.then(data => {

@@ -1,15 +1,20 @@
 import React from "react";
 import { withRouter, Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
 
 class SearchBar extends React.Component {
-
 	constructor() {
 		super()
 		this.state = { search: '' }
 	}
 
+	changeSearch() {
+		useDispatch().dispatch({ type: 'CHANGE_SEARCH', term: 'testeando'})
+	}
+
 	handleSubmit(event) {
 		event.preventDefault()
+		const data = useSelector(data => data.data)
 		this.props.history.push(`/search?s=${this.state.search}`)
 	}
 
@@ -20,6 +25,9 @@ class SearchBar extends React.Component {
 	}
 
 	render() {
+
+	
+		console.log((this.store))
 		return (
 			<div className="header">
 				<h1>

@@ -28,7 +28,7 @@ class Search extends React.Component {
 	componentDidUpdate(prevProps, newProps) {
 		const { s } = queryString.parse(this.props.location.search)
 
-		if (this.state.search != s) {
+		if (this.state.search !== s) {
 			searchByString(s, this.state.page)
 			.then(response => response.json())
 			.then(data => {
