@@ -1,16 +1,16 @@
 import { createStore } from 'redux'
 
 const INITAL_STATE = {
-  data: {
-    term: "",
-    tag: false,
-  }
+  term: "",
+  tag: false,
 }
 
 function search(state = INITAL_STATE, action) {
   switch (action.type) {
     case 'CHANGE_SEARCH':
-      return { ...state, data: [...state.data, action.term] }
+      return { ...state, term: action.term, tag: false }
+    case 'TAG_SEARCH' :
+        return { ...state, term: "", tag: true }
     default:
       return state;
   }

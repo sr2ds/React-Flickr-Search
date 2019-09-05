@@ -3,6 +3,7 @@ import queryString from 'query-string'
 import { searchByTags } from '../services/flickr'
 import Grid from '../components/Grid'
 import Loader from 'react-loader-spinner'
+import { connect } from 'react-redux';
 
 class Tags extends React.Component {
 
@@ -13,6 +14,8 @@ class Tags extends React.Component {
 
 	componentDidMount() {
 		const { t } = queryString.parse(this.props.location.search)
+
+		this.props.dispatch({ type: 'TAG_SEARCH', term: "" })
 
 		searchByTags(t, this.state.page)
 			.then(response => response.json())
@@ -27,6 +30,8 @@ class Tags extends React.Component {
 
 	componentDidUpdate(prevProps, newProps) {
 		const { t } = queryString.parse(this.props.location.search)
+		
+		this.props.dispatch({ type: 'TAG_SEARCH', term: "" })
 
 		if (this.state.search !== t) {
 			searchByTags(t, this.state.page)
@@ -88,4 +93,4 @@ class Tags extends React.Component {
 	}
 }
 
-export default Tags;
+export default connect()(Tags);

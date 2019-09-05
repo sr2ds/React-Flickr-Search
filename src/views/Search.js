@@ -3,6 +3,7 @@ import queryString from 'query-string'
 import { searchByString } from '../services/flickr'
 import Grid from '../components/Grid'
 import Loader from 'react-loader-spinner'
+import { connect } from 'react-redux';
 
 class Search extends React.Component {
 
@@ -65,7 +66,7 @@ class Search extends React.Component {
 				<>
 					<div className="info">
 						<span>
-							{this.state.search ? `Você buscou por "${this.state.search}"` : ''}
+							{this.state.search ? `Você buscou por "${this.props.term}"` : ''}
 						</span>
 						<span>
 							{this.state.search ? `Mostrando ${images.photo.length} imagens.` : ''}
@@ -87,4 +88,10 @@ class Search extends React.Component {
 	}
 }
 
-export default Search;
+function mapStateToProps(state) {
+	return {
+		term: state.term
+	}
+};
+
+export default connect(mapStateToProps)(Search);

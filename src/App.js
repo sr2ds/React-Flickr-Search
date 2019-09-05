@@ -8,6 +8,7 @@ import Tags from './views/Tags'
 import './App.css';
 
 function App() {
+	
 	return (
 		<Router>
 			<>
