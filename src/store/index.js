@@ -4,7 +4,8 @@ const INITAL_STATE = {
   search_term: "",
   images: [],
   loading: false,
-  page: 1
+  page: 1,
+  tag:false 
 }
 
 function reducer(state = INITAL_STATE, action) {
@@ -13,6 +14,12 @@ function reducer(state = INITAL_STATE, action) {
       return { ...state, ...action }
     case 'LOADING':
       return { ...state, loading: true }
+    case 'INCREMENT_PAGE':
+      return { ...state, page: state.page + 1}
+    case 'CLEAR_RESULT':
+      return { ...state, images: [] }
+    case 'TAG':
+      return { ...state, tag: action.tag}
     default:
       return state;
   }

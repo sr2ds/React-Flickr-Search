@@ -5,13 +5,11 @@ import { connect } from 'react-redux';
 class SearchBar extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = { term: props.search_term }
 	}
 
 	handleSubmit(event) {
 		event.preventDefault()
 		const input = event.target.search.value
-
 		this.props.history.push(`/search?s=${input}`)
 	}
 

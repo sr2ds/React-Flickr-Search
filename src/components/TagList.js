@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
 
 class TagList extends React.Component {
 
 	constructor(props) {
 		super(props);
 	}
-
+	
 	render() {
 		const { tags } = this.props
 
@@ -14,13 +15,24 @@ class TagList extends React.Component {
 			<>
 				{tags.map((tag, index) => {
 					if (tag && index < 4) {
-						return <Link to={`/tags?t=${tag}`} key={index} tag={tag}> {tag} </Link>
+						return <Link to={`/tags?t=${tag}`}
+							key={index}
+							tag={tag}
+							onClick={() => this.props.dispatch({ type: 'CLEAR_RESULT' })}
+						> {tag} </Link>
 					}
 				})}
 			</>
 		);
-		
+
 	}
 }
 
-export default TagList;
+
+function mapStateToProps(state) {
+	return {
+		...state
+	}
+}
+
+export default connect(mapStateToProps)(TagList);
