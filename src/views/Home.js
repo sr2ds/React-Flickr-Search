@@ -1,22 +1,16 @@
 import React from "react";
 import { withRouter, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class SearchBar extends React.Component {
-
-	constructor() {
-		super()
-		this.state = { search: '' }
+	constructor(props) {
+		super(props)
 	}
 
 	handleSubmit(event) {
 		event.preventDefault()
-		this.props.history.push(`/search?s=${this.state.search}`)
-	}
-
-	handleChange(event) {
-		this.setState({
-			search: event.target.value
-		});
+		const input = event.target.search.value
+		this.props.history.push(`/search?s=${input}`)
 	}
 
 	render() {
@@ -32,8 +26,7 @@ class SearchBar extends React.Component {
 						name="search"
 						autoFocus={true}
 						required
-						onChange={this.handleChange.bind(this)}
-						value={this.state.search}
+						value={this.search_term}
 					/>
 				</form>
 			</div>
@@ -41,4 +34,10 @@ class SearchBar extends React.Component {
 	}
 }
 
-export default withRouter(SearchBar);
+function mapStateToProps(state) {
+	return {
+		...state
+	}
+}
+
+export default withRouter(connect(mapStateToProps)(SearchBar));

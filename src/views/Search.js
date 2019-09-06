@@ -1,90 +1,95 @@
 import React from "react";
 import queryString from 'query-string'
-import { searchByString } from '../services/flickr'
+import { flickrSearch } from '../services/flickr'
+import GridInfo from '../components/GridInfo'
 import Grid from '../components/Grid'
 import Loader from 'react-loader-spinner'
+import { connect } from 'react-redux';
 
 class Search extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = { images: [], isLoading: true, page: 1 }
+	}
+
+	setSearch() {
+
+		const { pathname } = this.props.location
+		const search = queryString.parse(this.props.location.search)
+		const string = pathname === '/tags' ? search.t : search.s
+		const isTag = (pathname === '/tags')
+		
+		if (isTag) {
+			this.props.dispatch({ type: 'TAG', tag:true })
+		} else {
+			this.props.dispatch({ type: 'TAG', tag:false })
+
+		}
+
+		flickrSearch(string, this.props.page, isTag)
+			.then(response => response.json())
+			.then(data => {
+				if (this.props.page === 1 && (pathname === '/tags')) {
+					this.props.dispatch({ type: 'CLEAR_RESULT' })
+				}
+				if (this.props.page > 1) {
+					const { photo } = this.props.images					
+						data.photos.photo = photo.concat(data.photos.photo)
+				}
+				this.props.dispatch({
+					type: 'SET_RESULT',
+					loading: false,
+					images: data.photos,
+					search_term: string
+				})
+			})
 	}
 
 	componentDidMount() {
-		const { s } = queryString.parse(this.props.location.search)
-
-		searchByString(s, this.state.page)
-			.then(response => response.json())
-			.then(data => {
-				this.setState({
-					images: data.photos,
-					isLoading: false,
-					search: s
-				})
-			})
+		this.setSearch()
 	}
 
-	componentDidUpdate(prevProps, newProps) {
-		const { s } = queryString.parse(this.props.location.search)
-
-		if (this.state.search != s) {
-			searchByString(s, this.state.page)
-			.then(response => response.json())
-			.then(data => {
-				this.setState({
-					images: data.photos,
-					isLoading: false,
-					search: s
-				})
-			})
+	componentDidUpdate(prevProps) {
+		if (prevProps.images === this.props.images) {
+			if(this.props.page === 1) {
+				console.log('aaaa')
+				this.props.dispatch({ type: 'CLEAR_RESULT' })
+			}
+			this.setSearch()
 		}
 	}
 
 	async handleLoadMore() {
-		const { s } = queryString.parse(this.props.location.search)
-
-		searchByString(s, this.state.page + 1)
-			.then(response => response.json())
-			.then(data => {
-				data.photos.photo = this.state.images.photo.concat(data.photos.photo)
-				this.setState({
-					images: data.photos,
-					isLoading: false,
-					search: s,
-					page: this.state.page + 1
-				})
-			})
+		this.props.dispatch({ type: 'INCREMENT_PAGE' })
+		this.setSearch()
 	}
-	
+
 	render() {
-		const { isLoading, images } = this.state;
-
-		if (!isLoading) {
-			return (
-				<>
-					<div className="info">
-						<span>
-							{this.state.search ? `Você buscou por "${this.state.search}"` : ''}
-						</span>
-						<span>
-							{this.state.search ? `Mostrando ${images.photo.length} imagens.` : ''}
-						</span>
-					</div>
-					<div className="grid">
-						<Grid images={images.photo} />
-					</div>
-					<div>
-						<button className="load-more" onClick={this.handleLoadMore.bind(this)}>
-							Load More
-						</button>
-					</div>
-				</>
-			);
+		if (this.props.loading) {
+			return <Loader className="grid" type="Bars" color="#00BFFF" height="100" width="100" />
 		}
+		return (
+			<>
+				<GridInfo />
 
-		return <Loader className="grid" type="Bars" color="#00BFFF" height="100" width="100" />
+				<div className="grid">
+					<Grid />
+				</div>
+
+				<div>
+					<button className="load-more" onClick={this.handleLoadMore.bind(this)}>
+						Load More
+						</button>
+				</div>
+			</>
+		);
 	}
 }
 
-export default Search;
+function mapStateToProps(state) {
+	return {
+		...state
+	}
+}
+
+export default connect(mapStateToProps)(Search);
