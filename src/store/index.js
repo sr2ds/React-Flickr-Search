@@ -1,21 +1,23 @@
 import { createStore } from 'redux'
 
 const INITAL_STATE = {
-  term: "",
-  tag: false,
+  search_term: "",
+  images: [],
+  loading: false,
+  page: 1
 }
 
-function search(state = INITAL_STATE, action) {
+function reducer(state = INITAL_STATE, action) {
   switch (action.type) {
-    case 'CHANGE_SEARCH':
-      return { ...state, term: action.term, tag: false }
-    case 'TAG_SEARCH' :
-        return { ...state, term: "", tag: true }
+    case 'SET_RESULT':
+      return { ...state, ...action }
+    case 'LOADING':
+      return { ...state, loading: true }
     default:
       return state;
   }
 }
 
-const store = createStore(search);
+const store = createStore(reducer);
 
 export default store;

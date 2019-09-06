@@ -9,89 +9,71 @@ class Search extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = { images: [], isLoading: true, page: 1 }
+		this.state = { images: [], isLoading: true }
+	}
+
+	setSearch(string, page) {
+		// this.props.dispatch({ type: 'LOADING' })
+		searchByString(string, page)
+			.then(response => response.json())
+			.then(data => {
+				if (page > 1) {
+					const { photo } = this.props.images
+					data.photos.photo = photo.concat(data.photos.photo)
+				}
+				this.props.dispatch({ type: 'SET_RESULT', loading: false, images: data.photos, page: page, search_term: string })
+			})
 	}
 
 	componentDidMount() {
 		const { s } = queryString.parse(this.props.location.search)
-
-		searchByString(s, this.state.page)
-			.then(response => response.json())
-			.then(data => {
-				this.setState({
-					images: data.photos,
-					isLoading: false,
-					search: s
-				})
-			})
+		this.setSearch(s, this.props.page)
 	}
 
 	componentDidUpdate(prevProps, newProps) {
 		const { s } = queryString.parse(this.props.location.search)
-
-		if (this.state.search !== s) {
-			searchByString(s, this.state.page)
-			.then(response => response.json())
-			.then(data => {
-				this.setState({
-					images: data.photos,
-					isLoading: false,
-					search: s
-				})
-			})
+		// Impedir reload intermitente -> REVISAR
+		if (this.props.history.action !== "POP" || this.props.search_term !== s) {
+			this.setSearch(s, this.props.page)
 		}
 	}
 
 	async handleLoadMore() {
 		const { s } = queryString.parse(this.props.location.search)
-
-		searchByString(s, this.state.page + 1)
-			.then(response => response.json())
-			.then(data => {
-				data.photos.photo = this.state.images.photo.concat(data.photos.photo)
-				this.setState({
-					images: data.photos,
-					isLoading: false,
-					search: s,
-					page: this.state.page + 1
-				})
-			})
+		this.setSearch(s, this.props.page + 1)
 	}
-	
+
 	render() {
-		const { isLoading, images } = this.state;
-
-		if (!isLoading) {
-			return (
-				<>
-					<div className="info">
-						<span>
-							{this.state.search ? `Você buscou por "${this.props.term}"` : ''}
-						</span>
-						<span>
-							{this.state.search ? `Mostrando ${images.photo.length} imagens.` : ''}
-						</span>
-					</div>
-					<div className="grid">
-						<Grid images={images.photo} />
-					</div>
-					<div>
-						<button className="load-more" onClick={this.handleLoadMore.bind(this)}>
-							Load More
-						</button>
-					</div>
-				</>
-			);
+		if (this.props.loading) {
+			return <Loader className="grid" type="Bars" color="#00BFFF" height="100" width="100" />
 		}
-
-		return <Loader className="grid" type="Bars" color="#00BFFF" height="100" width="100" />
+		return (
+			<>
+				<div className="info">
+					<span>
+						{this.props.search_term ? `Você buscou por "${this.props.search_term}"` : ''}
+					</span>
+					<span>
+						{this.props.search_term ? `Mostrando ${this.props.images.photo.length} imagens.` : ''}
+					</span>
+				</div>
+				<div className="grid">
+					<Grid />
+				</div>
+				<div>
+					<button className="load-more" onClick={this.handleLoadMore.bind(this)}>
+						Load More
+						</button>
+				</div>
+			</>
+		);
 	}
 }
 
 function mapStateToProps(state) {
 	return {
-		term: state.term
+		...state
 	}
-};
+}
 
 export default connect(mapStateToProps)(Search);

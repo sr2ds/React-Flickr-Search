@@ -5,14 +5,13 @@ import { connect } from 'react-redux';
 class SearchBar extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = { term: props.term }
+		this.state = { term: props.search_term }
 	}
 
 	handleSubmit(event) {
 		event.preventDefault()
 		const input = event.target.search.value
 
-		this.props.dispatch({ type: 'CHANGE_SEARCH', term: input })
 		this.props.history.push(`/search?s=${input}`)
 	}
 
@@ -20,7 +19,7 @@ class SearchBar extends React.Component {
 		return (
 			<div className="header">
 				<h1>
-					<Link to="/"><h1>flickr-search {this.props.term}</h1></Link>
+					<Link to="/"><h1>flickr-search</h1></Link>
 				</h1>
 				<form onSubmit={this.handleSubmit.bind(this)}>
 					<input
@@ -29,7 +28,7 @@ class SearchBar extends React.Component {
 						name="search"
 						autoFocus={true}
 						required
-						value={this.term}
+						value={this.search_term}
 					/>
 				</form>
 			</div>
@@ -39,8 +38,8 @@ class SearchBar extends React.Component {
 
 function mapStateToProps(state) {
 	return {
-		term: state.term
+		...state
 	}
-};
+}
 
 export default withRouter(connect(mapStateToProps)(SearchBar));

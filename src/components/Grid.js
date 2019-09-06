@@ -1,5 +1,6 @@
 import React from "react";
 import Card from './Card'
+import { connect } from 'react-redux';
 
 class Grid extends React.Component {
 
@@ -8,18 +9,27 @@ class Grid extends React.Component {
 	}
 
 	render() {
-		const { images } = this.props
-		
-		return (
-			<>
-					{images.map(function (image, index) {
+		const { photo } = this.props.images
+		if (photo) {
+			return (
+				<>
+					{photo.map(function (image, index) {
 						return (
 							<Card image={image} key={index} {...index} />
 						)
 					})}
-			</>
-		);
+				</>
+			)
+		}
+		return <></>
+
 	}
 }
 
-export default Grid;
+function mapStateToProps(state) {
+	return {
+		...state
+	}
+}
+
+export default connect(mapStateToProps)(Grid);
